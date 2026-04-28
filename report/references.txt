@@ -1,0 +1,10 @@
+@article{mos_parameters,
+author = {Al-Kawaz, Asmaa and Alsheikhjader, Muhammed Subhi},
+year = {2020},
+month = {06},
+pages = {10-22},
+title = {90 nm Current Mirror Based Transimpedance Amplifiers for Fiber Optic Applications},
+volume = {29},
+journal = {Rafidain Journal of Science},
+doi = {10.33899/rjs.2020.165355}
+}

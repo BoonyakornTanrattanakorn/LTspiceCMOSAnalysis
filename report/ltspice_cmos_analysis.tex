@@ -1,0 +1,41 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{cite}
+\usepackage{graphicx}
+
+\graphicspath{ {./assets/} }
+
+\author{Boonyakorn Tanrattanakorn}
+\title{Analysis of Transistor-level CMOS Inverter in LTspice}
+
+\begin{document}
+
+\maketitle
+\newpage
+
+\section{Introduction}
+
+\section{Circuit Setup}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{circuit_setup.png}
+    \caption{Circuit Setup}
+    \label{fig:circuit_setup}
+\end{figure}
+
+From Fig. \ref{fig:circuit_setup}, the setup of the CMOS circuit in LTspice is shown. 
+First, on the left side, there are two voltage sources, V1 represents the power supply 
+voltage (Vdd) and is set to 5V, while V2 represents the input voltage (A). Then, on the
+right side, there are two MOSFETs used to represent the PMOS and NMOS transistors. The upper
+side is the PMOS transistor, which is connected to Vdd, while the lower side is the NMOS transistor,
+which is connected to the ground. Finally, the gate of both transistors is connected to A and
+the output voltage (Z) is connected to the junction between the two transistors. 
+
+\cite{mos_parameters}
+
+\section{Simulation Results}
+
+\newpage
+\bibliography{references}{}
+\bibliographystyle{plain}
+
+\end{document}
