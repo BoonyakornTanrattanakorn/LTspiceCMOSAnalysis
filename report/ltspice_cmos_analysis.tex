@@ -23,8 +23,8 @@
 The NMOS and PMOS transistors are modeled using the typical values for 180nm CMOS Small-Signal Model\cite{mos_parameters}.
 The SPICE directives for the NMOS and PMOS transistors are as follows:
 \begin{itemize}
-    \item \textbf{NMOS:} \texttt{.model NMOS\_180nm NMOS (LEVEL=1 VTO=0.8 KP=90u GAMMA=0.5 PHI=0.68 LAMBDA=0.06)}
-    \item \textbf{PMOS:} \texttt{.model PMOS\_180nm PMOS (LEVEL=1 VTO=-0.9 KP=30u GAMMA=0.5 PHI=0.68 LAMBDA=0.06)}
+    \item \textbf{NMOS:} \texttt{.model NMOS\_180nm NMOS (LEVEL=1 VTO=0.8 KP=90u GAMMA=0.5 PHI=0.68 LAMBDA=0.06 TOX=0.02u CJ=2.4e-4 CJSW=2.0e-10 CGSO=2.0e-10 CGDO=2.0e-10 PB=0.9 NSUB=6e15)}
+    \item \textbf{PMOS:} \texttt{.model PMOS\_180nm PMOS (LEVEL=1 VTO=-0.9 KP=30u GAMMA=0.5 PHI=0.68 LAMBDA=0.06 TOX=0.02u CJ=2.4e-4 CJSW=2.0e-10 CGSO=2.0e-10 CGDO=2.0e-10 PB=0.9 NSUB=6e15)}
 \end{itemize}
 
 \subsection{LTspice Schematic}
@@ -35,7 +35,7 @@ The SPICE directives for the NMOS and PMOS transistors are as follows:
     \label{fig:circuit_setup}
 \end{figure}
 
-From Fig. \ref{fig:circuit_setup}, the circuit setup of the transistor-level CMOS inverter in LTspice is shown. 
+From Fig.\ref{fig:circuit_setup}, the circuit setup of the transistor-level CMOS inverter in LTspice is shown. 
 First, on the left side, there are two voltage sources, the power supply voltage (Vdd) is set to 10V
 , while V2 represents the input voltage (A). Then, on the
 right side, there are two MOSFETs used to represent the PMOS and NMOS transistors. The upper
@@ -44,85 +44,78 @@ which is connected to the ground. Finally, the gate of both transistors is conne
 the output voltage (Z) is connected to the junction between the two transistors. 
 \cite{mos_parameters}
 
+\newpage
 \section{DC Analysis (Voltage Transfer Characteristics)}
 \subsection{VTC Curve Generation}
-To obtain the Voltage Transfer Characteristic (VTC), a DC sweep simulation (\texttt{.dc}) is performed, sweeping the input voltage from 0V to [Vdd] with a step size of [Step Size].
+To obtain the Voltage Transfer Characteristic (VTC), a DC sweep simulation is performed, sweeping the input voltage from 0V to 1.8V with a step size of 0.001.
 
 \begin{figure}[h]
     \centering
-    % \includegraphics[width=0.8\textwidth]{vtc_curve.png}
-    [Insert VTC Curve Graph Here - Uncomment the includegraphics above when ready]
+    \includegraphics[width=\textwidth]{vtc_curve.png}
     \caption{Voltage Transfer Characteristic (VTC) of the CMOS Inverter.}
     \label{fig:vtc_curve}
 \end{figure}
 
+From Fig.\ref{fig:vtc_curve}, the relationship between the Va and Vz is shown. 
+It was found that when Va was lower than 0.8V, the output voltage (Vz) was high, and 
+when Va was higher than 0.9V, Vz was low.
+
 \subsection{Critical Voltages}
-From the VTC curve, the critical voltages are extracted (typically where the slope is -1):
+From the VTC curve, the critical voltages are extracted (where the slope is -1):
 \begin{itemize}
-    \item $V_{OH} = $ [Result] V
-    \item $V_{OL} = $ [Result] V
-    \item $V_{IH} = $ [Result] V
-    \item $V_{IL} = $ [Result] V
+    \item $V_{OH} = $ 1.8 V
+    \item $V_{OL} = $ 0 V
+    \item $V_{IH} = $ 0.857 V
+    \item $V_{IL} = $ 0.829 V
 \end{itemize}
 
 \subsection{Noise Margins}
 The noise margins are calculated using the extracted critical voltages:
 \begin{itemize}
-    \item High Noise Margin ($NM_H = V_{OH} - V_{IH}$) = [Result] V
-    \item Low Noise Margin ($NM_L = V_{IL} - V_{OL}$) = [Result] V
+    \item High Noise Margin ($NM_H = V_{OH} - V_{IH}$) = 0.943 V
+    \item Low Noise Margin ($NM_L = V_{IL} - V_{OL}$) = 0.829 V
 \end{itemize}
 
 \subsection{Switching Threshold}
 The switching threshold ($V_M$), where $V_{in} = V_{out}$, is measured from the VTC:
 \begin{itemize}
-    \item $V_M = $ [Result] V
+    \item $V_M = $ 0.845 V
 \end{itemize}
 
+\newpage
 \section{Transient Analysis (Timing Characteristics)}
 \subsection{Transient Simulation Setup}
-To analyze the timing characteristics, a transient simulation (\texttt{.tran}) is performed over [Simulation Time]. The input is driven by a pulse voltage source with the following parameters:
+To analyze the timing characteristics, a transient simulation is performed. 
+The input is driven by a pulse voltage source 
+with the following parameters:
 \begin{itemize}
-    \item $V_{initial} = $ [0] V, $V_{on} = $ [Vdd] V
-    \item $T_{delay} = $ [Delay], $T_{rise} = $ [Rise], $T_{fall} = $ [Fall]
-    \item $T_{on} = $ [Pulse Width], $T_{period} = $ [Period]
+    \item $V_{initial} = $ 0 V, $V_{on} = $ 1.8 V
+    \item $T_{delay} = $ 0 s, $T_{rise} = $ 1 ns, $T_{fall} = $ 1 ns
+    \item $T_{on} = $ 10 ns, $T_{period} = $ 20 ns
 \end{itemize}
 
+\subsection{Propagation Delay and Timing}
 \begin{figure}[h]
     \centering
-    % \includegraphics[width=0.8\textwidth]{transient_waveforms.png}
-    [Insert Transient Waveforms (Input and Output) Graph Here]
-    \caption{Transient response of the CMOS Inverter.}
+    \includegraphics[width=\textwidth]{transient_waveform.png}
+    \includegraphics[width=\textwidth]{transient_waveform_rise.png}
+    \includegraphics[width=\textwidth]{transient_waveform_fall.png}
+    \caption{Top: Transient response of the CMOS inverter. 
+    Middle: Zoomed-in view of the rise time. 
+    Bottom: Zoomed-in view of the fall time.}
     \label{fig:transient}
 \end{figure}
-
-\subsection{Propagation Delay}
 The propagation delay is measured between the 50\% points of the input and output transitions:
 \begin{itemize}
-    \item High-to-Low Delay ($t_{pHL}$) = [Result]
-    \item Low-to-High Delay ($t_{pLH}$) = [Result]
-    \item Average Delay ($t_p$) = [Result]
+    \item High-to-Low Delay ($t_{pHL}$) = 7.5 ps
+    \item Low-to-High Delay ($t_{pLH}$) = 150 ps
+    \item Average Delay ($t_p$) = 79 ps
 \end{itemize}
 
-\subsection{Rise and Fall Times}
 The rise and fall times are measured between the 10\% and 90\% points of the output signal:
 \begin{itemize}
-    \item Rise Time ($t_r$) = [Result]
-    \item Fall Time ($t_f$) = [Result]
-\end{itemize}
-
-\section{Power Analysis}
-\subsection{Dynamic Power}
-Dynamic power dissipation is measured during the transient simulation:
-\begin{itemize}
-    \item Average Dynamic Power ($P_{dynamic}$) = [Result]
-\end{itemize}
-% [Optional: Insert plot of instantaneous power/current spikes during transitions here]
-
-\subsection{Static Power}
-Static (leakage) power is calculated by measuring the current drawn from Vdd when the inverter state is steady:
-\begin{itemize}
-    \item Input Low ($V_{in} = 0V$), $P_{static} = $ [Result]
-    \item Input High ($V_{in} = Vdd$), $P_{static} = $ [Result]
+    \item Rise Time ($t_r$) = 74 ps
+    \item Fall Time ($t_f$) = 72 ps
 \end{itemize}
 
 \newpage
