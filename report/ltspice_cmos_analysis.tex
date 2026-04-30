@@ -6,6 +6,7 @@
 \usepackage{graphicx}
 \usepackage{amsmath}
 \usepackage{url}
+\usepackage{multicol}
 
 \graphicspath{ {./assets/} }
 
@@ -15,7 +16,6 @@
 \begin{document}
 
 \maketitle
-\newpage
 
 \section{Design Parameters \& Tool Setup}
 
@@ -26,7 +26,8 @@ The SPICE directives for the NMOS and PMOS transistors are as follows:
     \item \textbf{NMOS:} \texttt{.model NMOS\_180nm NMOS (LEVEL=1 VTO=0.8 KP=90u GAMMA=0.5 PHI=0.68 LAMBDA=0.06 TOX=0.02u CJ=2.4e-4 CJSW=2.0e-10 CGSO=2.0e-10 CGDO=2.0e-10 PB=0.9 NSUB=6e15)}
     \item \textbf{PMOS:} \texttt{.model PMOS\_180nm PMOS (LEVEL=1 VTO=-0.9 KP=30u GAMMA=0.5 PHI=0.68 LAMBDA=0.06 TOX=0.02u CJ=2.4e-4 CJSW=2.0e-10 CGSO=2.0e-10 CGDO=2.0e-10 PB=0.9 NSUB=6e15)}
 \end{itemize}
-
+The Length (L) of both transistors is set to $0.18 \mu m$, and the Width (W) is set to $1 \mu m$ for the NMOS and $2 \mu m$ for the PMOS.
+\newpage
 \subsection{LTspice Schematic}
 \begin{figure}[h]
     \centering
@@ -35,19 +36,10 @@ The SPICE directives for the NMOS and PMOS transistors are as follows:
     \label{fig:circuit_setup}
 \end{figure}
 
-From Fig.\ref{fig:circuit_setup}, the circuit setup of the transistor-level CMOS inverter in LTspice is shown. 
-First, on the left side, there are two voltage sources, the power supply voltage (Vdd) is set to 10V
-, while V2 represents the input voltage (A). Then, on the
-right side, there are two MOSFETs used to represent the PMOS and NMOS transistors. The upper
-side is the PMOS transistor, which is connected to Vdd, while the lower side is the NMOS transistor,
-which is connected to the ground. Finally, the gate of both transistors is connected to A and
-the output voltage (Z) is connected to the junction between the two transistors. 
-\cite{mos_parameters}
-
 \newpage
 \section{DC Analysis (Voltage Transfer Characteristics)}
 \subsection{VTC Curve Generation}
-To obtain the Voltage Transfer Characteristic (VTC), a DC sweep simulation is performed, sweeping the input voltage from 0V to 1.8V with a step size of 0.001.
+To obtain the Voltage Transfer Characteristic (VTC), a DC sweep simulation is performed, sweeping the input voltage from 0V to 1.8V.
 
 \begin{figure}[h]
     \centering
@@ -62,12 +54,14 @@ when Va was higher than 0.9V, Vz was low.
 
 \subsection{Critical Voltages}
 From the VTC curve, the critical voltages are extracted (where the slope is -1):
-\begin{itemize}
-    \item $V_{OH} = $ 1.8 V
-    \item $V_{OL} = $ 0 V
-    \item $V_{IH} = $ 0.857 V
-    \item $V_{IL} = $ 0.829 V
-\end{itemize}
+\begin{multicols}{2}
+    \begin{itemize}
+        \item $V_{OH} = \mathbf{1.8\ \mathrm{V}}$
+        \item $V_{OL} = \mathbf{0\ \mathrm{V}}$
+        \item $V_{IH} = \mathbf{0.857\ \mathrm{V}}$
+        \item $V_{IL} = \mathbf{0.829\ \mathrm{V}}$
+    \end{itemize}
+\end{multicols}
 
 \subsection{Noise Margins}
 The noise margins are calculated using the extracted critical voltages:
@@ -105,6 +99,8 @@ with the following parameters:
     Bottom: Zoomed-in view of the fall time.}
     \label{fig:transient}
 \end{figure}
+
+\newpage
 The propagation delay is measured between the 50\% points of the input and output transitions:
 \begin{itemize}
     \item High-to-Low Delay ($t_{pHL}$) = 7.5 ps
@@ -118,7 +114,6 @@ The rise and fall times are measured between the 10\% and 90\% points of the out
     \item Fall Time ($t_f$) = 72 ps
 \end{itemize}
 
-\newpage
 \bibliography{references}
 \bibliographystyle{plain}
 
